@@ -17,7 +17,11 @@
 <body>
     <div class="wrapper">
         <header>
-            {# Create nav here #}
+            <nav>
+                <a href="{{ path('app_main_index') }}">Home</a>
+                <a href="{{ path('app_main_about') }}">About</a>
+                <a href="{{ path('app_main_contact') }}">Contact</a>
+            </nav>
         </header>
         <main>
             {# `body` matches Symfony's convention; `main` would be more semantic #}
