@@ -17,7 +17,7 @@ final class MainController extends AbstractController
     )]
     public function index(): Response
     {
-        return new Response('Hello');
+        return $this->render('main/index.html.twig');
     }
 
     #[Route(
@@ -27,7 +27,7 @@ final class MainController extends AbstractController
     )]
     public function about(): Response
     {
-        return new Response('About what ?');
+        return $this->render('main/about.html.twig');
     }
 
     #[Route(
@@ -37,6 +37,6 @@ final class MainController extends AbstractController
     )]
     public function contact(): Response
     {
-        return new Response('Call me maybe !');
+        return $this->render('main/contact.html.twig');
     }
 }
