@@ -1,19 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{# Book title #} - Community Library{% endblock %}
+{% block title "#{book.title} - Community Library" %}
 
 {% block body %}
-    <h1>{# Book title #}</h1>
+    <h1>{{ book.title }}</h1>
 
     <div class="book-meta">
-        <span>{# Book author #}</span>
-        <span>{# Book year #}</span>
-        <span class="genre-badge">{# Book genre (uppercase) #}</span>
+        <span>{{ book.author }}</span>
+        <span>{{ book.year }}</span>
+        <span class="genre-badge">{{ book.genre|upper }}</span>
     </div>
 
     <hr>
 
-    <p>{# Book description #}</p>
+    <p>{{ book.description }}</p>
 
-    <a href="{# Link to the books listing #}" class="btn btn-outline-secondary">← Back to all books</a>
-{% endblock %}
+    <a href="{{ path('app_book_index') }}" class="btn btn-outline-secondary">← Back to all books</a>
+{% endblock body %}

@@ -25,6 +25,7 @@ final class BookController extends AbstractController
         return [
             'the-lord-of-the-rings' => [
                 'title' => 'The Lord of the Rings',
+                'slug' => 'the-lord-of-the-rings',
                 'author' => 'J.R.R. Tolkien',
                 'year' => 1954,
                 'genre' => 'Fantasy',
@@ -32,6 +33,7 @@ final class BookController extends AbstractController
             ],
             'the-eye-of-the-world' => [
                 'title' => 'The Eye of the World',
+                'slug' => 'the-eye-of-the-world',
                 'author' => 'Robert Jordan',
                 'year' => 1990,
                 'genre' => 'Fantasy',
@@ -39,6 +41,7 @@ final class BookController extends AbstractController
             ],
             'promise-of-blood' => [
                 'title' => 'Promise of Blood',
+                'slug' => 'promise-of-blood',
                 'author' => 'Brian McClellan',
                 'year' => 2013,
                 'genre' => 'Fantasy',
@@ -46,6 +49,7 @@ final class BookController extends AbstractController
             ],
             'magician' => [
                 'title' => 'Magician',
+                'slug' => 'magician',
                 'author' => 'Raymond E. Feist',
                 'year' => 1982,
                 'genre' => 'Fantasy',
@@ -53,6 +57,7 @@ final class BookController extends AbstractController
             ],
             'a-brief-history-of-time' => [
                 'title' => 'A Brief History of Time',
+                'slug' => 'a-brief-history-of-time',
                 'author' => 'Stephen Hawking',
                 'year' => 1988,
                 'genre' => 'Non-Fiction',
