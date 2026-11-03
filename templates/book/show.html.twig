@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{# Book title #} - Community Library{% endblock %}
+
+{% block body %}
+    <h1>{# Book title #}</h1>
+
+    <div class="book-meta">
+        <span>{# Book author #}</span>
+        <span>{# Book year #}</span>
+        <span class="genre-badge">{# Book genre (uppercase) #}</span>
+    </div>
+
+    <hr>
+
+    <p>{# Book description #}</p>
+
+    <a href="{# Link to the books listing #}" class="btn btn-outline-secondary">← Back to all books</a>
+{% endblock %}
