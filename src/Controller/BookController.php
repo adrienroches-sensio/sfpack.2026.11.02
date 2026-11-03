@@ -86,7 +86,7 @@ final class BookController extends AbstractController
     )]
     public function show(string $slug): Response
     {
-        $book = $this->getBooks()[$slug];
+        $book = $this->getBooks()[$slug] ?? throw $this->createNotFoundException('Book not found.');
 
         return $this->render('book/show.html.twig', [
             'book' => $book,
