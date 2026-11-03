@@ -12,6 +12,11 @@ $ symfony console foundry:load-fixtures catalog --no-interaction
 $ symfony serve
 ```
 
+If you want to load 250 totally random books just use :
+```shell
+$ symfony console foundry:load-fixtures huge_catalog --no-interaction
+```
+
 # Fixtures
 ## Generate Factory & Story
 

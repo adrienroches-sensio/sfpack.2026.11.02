@@ -3,7 +3,9 @@
 namespace App\Factory;
 
 use App\Entity\Book;
+use DateTimeImmutable;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
+use function rtrim;
 
 /**
  * @extends PersistentProxyObjectFactory<Book>
@@ -32,8 +34,13 @@ final class BookFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
+            'title' => rtrim(self::faker()->sentence(random_int(2, 5)), '.'),
+            'isbn' => self::faker()->unique()->isbn13(),
+            'summary' => self::faker()->sentences(6, true),
+            'publicationDate' => DateTimeImmutable::createFromInterface(self::faker()->dateTimeThisDecade()),
             'available' => self::faker()->boolean(),
-            'title' => self::faker()->text(255),
+            'language' => self::faker()->languageCode(),
+            'coverUrl' => self::faker()->imageUrl(),
         ];
     }
 
