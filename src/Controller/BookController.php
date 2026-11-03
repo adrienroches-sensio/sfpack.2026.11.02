@@ -62,6 +62,20 @@ final class BookController extends AbstractController
     }
 
     #[Route(
+        path: '/books',
+        name: 'app_book_index',
+        methods: ['GET'],
+    )]
+    public function index(): Response
+    {
+        $books = $this->getBooks();
+
+        return $this->render('book/index.html.twig', [
+            'books' => $books,
+        ]);
+    }
+
+    #[Route(
         path: '/books/{slug}',
         name: 'app_book_show',
         requirements: [
@@ -72,7 +86,11 @@ final class BookController extends AbstractController
     )]
     public function show(string $slug): Response
     {
-        return new Response("Slug: {$slug}");
+        $book = $this->getBooks()[$slug];
+
+        return $this->render('book/show.html.twig', [
+            'book' => $book,
+        ]);
     }
 
     #[Route(
