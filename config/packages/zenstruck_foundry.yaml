@@ -17,4 +17,11 @@ when@dev: &dev
     #        autowire: true
     #        autoconfigure: true
 
-when@test: *dev
+# You can verify if it works with:
+#    symfony console --env=test debug:config zenstruck_foundry orm.reset.mode
+when@test:
+    <<: *dev
+    zenstruck_foundry:
+        orm:
+            reset:
+                mode: 'migrate'
