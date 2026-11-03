@@ -27,7 +27,7 @@ class Book
     private ?\DateTimeImmutable $publicationDate = null;
 
     #[ORM\Column]
-    private ?bool $available = null;
+    private bool $available = true;
 
     #[ORM\Column(length: 2, nullable: true)]
     private ?string $language = null;
