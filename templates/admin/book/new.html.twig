@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Create book' %}
+
+{% block body %}
+    {{ form_start(book_form) }}
+        {{ form_widget(book_form) }}
+
+        <button type="submit">Create</button>
+    {{ form_end(book_form) }}
+{% endblock body %}
