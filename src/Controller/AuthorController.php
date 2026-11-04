@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Author;
 use App\Repository\AuthorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,10 +35,8 @@ final class AuthorController extends AbstractController
         ],
         methods: ['GET'],
     )]
-    public function show(AuthorRepository $authorRepository, int $id): Response
+    public function show(Author $author): Response
     {
-        $author = $authorRepository->getById($id);
-
         return $this->render('author/show.html.twig', [
             'author' => $author,
         ]);
