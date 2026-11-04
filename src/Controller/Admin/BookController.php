@@ -18,9 +18,15 @@ final class BookController extends AbstractController
         name: 'admin_book_new',
         methods: ['GET', 'POST'],
     )]
-    public function new(Request $request): Response
+    #[Route(
+        path: '/admin/books/{id}/edit',
+        name: 'admin_book_edit',
+        methods: ['GET', 'POST'],
+    )]
+    public function new(Request $request, Book|null $book = null): Response
     {
-        $book = new Book();
+        $isCreate = null === $book;
+        $book ??= new Book();
 
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
@@ -31,6 +37,7 @@ final class BookController extends AbstractController
 
         return $this->render('admin/book/new.html.twig', [
             'book_form' => $form,
+            'is_create' => $isCreate,
         ]);
     }
 }
