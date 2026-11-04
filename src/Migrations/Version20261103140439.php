@@ -14,7 +14,7 @@ final class Version20261103140439 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return <<<MD
+        return <<<'MD'
         Initialized book table from Book entity.
 
         +
