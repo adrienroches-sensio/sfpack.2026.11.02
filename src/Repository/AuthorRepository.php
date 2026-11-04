@@ -21,7 +21,14 @@ class AuthorRepository extends ServiceEntityRepository
      */
     public function listAll(): array
     {
-        return $this->findAll();
+        $qb = $this->createQueryBuilder('author');
+
+        $qb
+            ->leftJoin('author.books', 'book')
+            ->addSelect('book')
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 
     public function getById(int $id): Author
