@@ -7,6 +7,7 @@ use App\Entity\Book;
 use App\Entity\Genre;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,7 +19,7 @@ class BookType extends AbstractType
             ->add('title')
             ->add('isbn')
             ->add('summary')
-            ->add('publicationDate', null, [
+            ->add('publicationDate', DateType::class, [
                 'widget' => 'single_text'
             ])
             ->add('available')
@@ -26,12 +27,12 @@ class BookType extends AbstractType
             ->add('coverUrl')
             ->add('genres', EntityType::class, [
                 'class' => Genre::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
                 'multiple' => true,
             ])
             ->add('authors', EntityType::class, [
                 'class' => Author::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
                 'multiple' => true,
             ])
         ;
