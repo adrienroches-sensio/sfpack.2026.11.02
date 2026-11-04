@@ -7,6 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Isbn;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 class Book
@@ -16,15 +20,19 @@ class Book
     #[ORM\Column]
     private ?int $id = null;
 
+    #[NotNull]
+    #[Length(min: 3, max: 255)]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    #[Isbn(type: Isbn::ISBN_13)]
     #[ORM\Column(length: 13, nullable: true)]
     private ?string $isbn = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $summary = null;
 
+    #[LessThanOrEqual(value: 'today')]
     #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $publicationDate = null;
 
