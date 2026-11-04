@@ -16,6 +16,19 @@ class AuthorRepository extends ServiceEntityRepository
         parent::__construct($registry, Author::class);
     }
 
+    /**
+     * @return list<Author>
+     */
+    public function listAll(): array
+    {
+        return $this->findAll();
+    }
+
+    public function getById(int $id): Author
+    {
+        return $this->find($id);
+    }
+
 //    /**
 //     * @return Author[] Returns an array of Author objects
 //     */

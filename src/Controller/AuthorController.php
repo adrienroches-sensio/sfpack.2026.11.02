@@ -19,7 +19,7 @@ final class AuthorController extends AbstractController
     )]
     public function index(AuthorRepository $authorRepository): Response
     {
-        $authors = $authorRepository->findAll();
+        $authors = $authorRepository->listAll();
 
         return $this->render('author/index.html.twig', [
             'authors' => $authors,
@@ -36,7 +36,7 @@ final class AuthorController extends AbstractController
     )]
     public function show(AuthorRepository $authorRepository, int $id): Response
     {
-        $author = $authorRepository->find($id);
+        $author = $authorRepository->getById($id);
 
         return $this->render('author/show.html.twig', [
             'author' => $author,
