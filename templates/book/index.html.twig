@@ -9,12 +9,12 @@
         {% for book in books %}
         <div class="book-card">
             <h2>
-                <a href="{{ path('app_book_show', {slug: book.slug}) }}">
+                <a href="{{ path('app_book_show', {id: book.id}) }}">
                     {{ book.title }}
                 </a>
             </h2>
-            <p>{{ book.author }} &mdash; {{ book.year }}</p>
-            <p><em>{{ book.genre }}</em></p>
+            <p>{{ book.authors|map(author => author.name)|join(', ') }} &mdash; {{ book.language }}</p>
+            <p><em>{{ book.genres|map(genre => genre.name)|join(', ') }}</em></p>
         </div>
         {% endfor %}
     </div>

@@ -26,7 +26,7 @@ final class BookController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->redirectToRoute('app_book_index');
+            return $this->redirectToRoute('app_book_show', ['id' => $book->getId()]);
         }
 
         return $this->render('admin/book/new.html.twig', [

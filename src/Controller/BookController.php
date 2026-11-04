@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Book;
+use App\Repository\BookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -71,9 +73,9 @@ final class BookController extends AbstractController
         name: 'app_book_index',
         methods: ['GET'],
     )]
-    public function index(): Response
+    public function index(BookRepository $bookRepository): Response
     {
-        $books = $this->getBooks();
+        $books = $bookRepository->listAll();
 
         return $this->render('book/index.html.twig', [
             'books' => $books,
@@ -81,30 +83,18 @@ final class BookController extends AbstractController
     }
 
     #[Route(
-        path: '/books/{slug}',
+        path: '/books/{id}',
         name: 'app_book_show',
         requirements: [
-            'slug' => Requirement::ASCII_SLUG,
+            'id' => Requirement::DIGITS,
         ],
         methods: ['GET'],
         priority: -1,
     )]
-    public function show(string $slug): Response
+    public function show(Book $book): Response
     {
-        $book = $this->getBooks()[$slug] ?? throw $this->createNotFoundException('Book not found.');
-
         return $this->render('book/show.html.twig', [
             'book' => $book,
         ]);
-    }
-
-    #[Route(
-        path: '/books/new',
-        name: 'app_book_new',
-        methods: ['GET'],
-    )]
-    public function new(): Response
-    {
-        return new Response('new');
     }
 }
