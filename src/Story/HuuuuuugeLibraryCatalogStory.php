@@ -2,6 +2,7 @@
 
 namespace App\Story;
 
+use App\Factory\AuthorFactory;
 use App\Factory\BookFactory;
 use App\Factory\GenreFactory;
 use Zenstruck\Foundry\Attribute\AsFixture;
@@ -15,6 +16,8 @@ final class HuuuuuugeLibraryCatalogStory extends Story
     {
         GenreFactory::createAll();
 
+        AuthorFactory::createMany(150);
+
         BookFactory::new()
             ->many(250)
             ->create(static function () {
@@ -24,8 +27,11 @@ final class HuuuuuugeLibraryCatalogStory extends Story
                     return [];
                 }
 
+                $numberOfAuthors = random_int(1, 3);
+
                 return [
-                    'genres' => GenreFactory::randomSet($numberOfGenres)
+                    'genres' => GenreFactory::randomSet($numberOfGenres),
+                    'authors' => AuthorFactory::randomSet($numberOfAuthors),
                 ];
             })
         ;

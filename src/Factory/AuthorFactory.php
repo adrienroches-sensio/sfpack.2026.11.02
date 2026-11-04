@@ -32,7 +32,7 @@ final class AuthorFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'name' => self::faker()->text(255),
+            'name' => self::faker()->name(),
         ];
     }
 

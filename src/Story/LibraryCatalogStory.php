@@ -2,6 +2,7 @@
 
 namespace App\Story;
 
+use App\Factory\AuthorFactory;
 use App\Factory\BookFactory;
 use App\Factory\GenreFactory;
 use DateTimeImmutable;
@@ -38,15 +39,14 @@ final class LibraryCatalogStory extends Story
                 $bookIndex = $i - 1;
                 $bookData = $booksData[$bookIndex];
 
-                unset(
-                    $bookData['author'],
-                );
-
                 $genres = [];
                 foreach ($bookData['genres'] as $genreName) {
                     $genres[] = GenreFactory::findOrCreate(['name' => $genreName]);
                 }
                 $bookData['genres'] = $genres;
+
+                $bookData['authors'] = [AuthorFactory::findOrCreate(['name' => $bookData['author']])];
+                unset($bookData['author']);
 
                 return $bookData;
             })
