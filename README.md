@@ -24,3 +24,10 @@ $ symfony console foundry:load-fixtures huge_catalog --no-interaction
 $ symfony console make:factory <entityName>
 $ symfony console make:story <name>
 ```
+
+# Users
+
+| username | password | roles        |
+|----------|----------|--------------|
+| user     | user     | -            |
+| admin    | admin    | `ROLE_ADMIN` |

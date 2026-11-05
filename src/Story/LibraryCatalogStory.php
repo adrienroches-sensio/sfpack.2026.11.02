@@ -5,6 +5,7 @@ namespace App\Story;
 use App\Factory\AuthorFactory;
 use App\Factory\BookFactory;
 use App\Factory\GenreFactory;
+use App\Factory\UserFactory;
 use DateTimeImmutable;
 use Zenstruck\Foundry\Attribute\AsFixture;
 use Zenstruck\Foundry\Story;
@@ -51,5 +52,16 @@ final class LibraryCatalogStory extends Story
                 return $bookData;
             })
         ;
+
+        UserFactory::createOne([
+            'username' => 'admin',
+            'password' => 'admin',
+            'roles' => ['ROLE_ADMIN'],
+        ]);
+
+        UserFactory::createOne([
+            'username' => 'user',
+            'password' => 'user',
+        ]);
     }
 }
