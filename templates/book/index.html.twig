@@ -5,25 +5,38 @@
 {% block body %}
     <h1>Our collection ({{ books|length }} books)</h1>
 
-    <div class="book-grid">
-        {% for book in books %}
-            <div class="book-card">
-                <h2>
-                    <a href="{{ path('app_book_show', {id: book.id}) }}">
-                        {{ book.title }}
-                    </a>
-                </h2>
-                <p>
-                    {{ book.authors|map(a => a.name)|join(', ') }}
-                    &mdash; {{ book.publicationDate|date('Y') }}
-                </p>
+<div class="listing-layout">
+    <aside class="listing-sidebar">
+        <h2>Filter</h2>
+        {{ form_start(search_form) }}
+            {{ form_widget(search_form) }}
 
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('admin_book_edit', {id: book.id}) }}" class="btn btn-outline-secondary">
-                        Edit
-                    </a>
-                {% endif %}
-            </div>
-        {% endfor %}
-    </div>
+            <button type="submit">Search</button>
+        {{ form_end(search_form) }}
+    </aside>
+
+    <section class="listing-main">
+        <div class="book-grid">
+            {% for book in books %}
+                <div class="book-card">
+                    <h2>
+                        <a href="{{ path('app_book_show', {id: book.id}) }}">
+                            {{ book.title }}
+                        </a>
+                    </h2>
+                    <p>
+                        {{ book.authors|map(a => a.name)|join(', ') }}
+                        &mdash; {{ book.publicationDate|date('Y') }}
+                    </p>
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('admin_book_edit', {id: book.id}) }}" class="btn btn-outline-secondary">
+                            Edit
+                        </a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
 {% endblock %}

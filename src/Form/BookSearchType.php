@@ -29,7 +29,6 @@ class BookSearchType extends AbstractType
                 'label' => 'Only available books',
                 'required' => false,
                 'choices' => [
-                    '' => null,
                     'Yes' => true,
                     'No' => false,
                 ]
