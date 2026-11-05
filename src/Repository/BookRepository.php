@@ -54,7 +54,7 @@ class BookRepository extends ServiceEntityRepository
             ;
         }
 
-        if (array_key_exists('available', $criteria) === true) {
+        if (array_key_exists('available', $criteria) === true && $criteria['available'] !== null) {
             $qb = $qb
                 ->andWhere($qb->expr()->eq('book.available', ':available'))
                 ->setParameter('available', $criteria['available'])
