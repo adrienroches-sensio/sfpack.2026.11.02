@@ -8,14 +8,38 @@
 <div class="listing-layout">
     <aside class="listing-sidebar">
         <h2>Filter</h2>
-        {{ form_start(search_form) }}
-            {{ form_widget(search_form) }}
+        <form method="get">
+            <label for="q">Title</label>
+            <input id="q" type="search" name="q" value="{{ criteria.q }}" placeholder="Title…">
 
+            <label for="author">Author</label>
+            <input id="author" type="text" name="author" value="{{ criteria.author }}" placeholder="Author…">
+
+            <label for="genre">Genre</label>
+            <select id="genre" name="genre">
+                <option value="">All genres</option>
+                {% for genre in genres %}
+                    <option value="{{ genre.name }}" {{ criteria.genre == genre.name ? 'selected' }}>{{ genre.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label><input type="checkbox" name="available" value="1" {{ criteria.available ? 'checked' }}> Only available</label>
             <button type="submit">Search</button>
-        {{ form_end(search_form) }}
+        </form>
     </aside>
 
     <section class="listing-main">
+        <div class="sort-bar">
+            Sort by:
+            {% for column in enum('App\\Search\\Book\\BookSortableColumn').cases %}
+                {% set isActive = criteria.sort?.value == column.value %}
+                {% set nextDir  = isActive and criteria.direction == enum('\SortDirection').Ascending ? 'desc' : 'asc' %}
+                <a href="{{ path('app_book_index', app.request.query.all|merge({sort: column.value, direction: nextDir})) }}">
+                    {{ column.value|title }}{% if isActive %} {{ criteria.direction == enum('\SortDirection').Ascending ? '↑' : '↓' }}{% endif %}
+                </a>
+            {% endfor %}
+        </div>
+
         <div class="book-grid">
             {% for book in books %}
                 <div class="book-card">

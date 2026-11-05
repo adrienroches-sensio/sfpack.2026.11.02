@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Book;
+use App\Search\Book\BookSearchCriteria;
+use App\Search\Book\BookSortableColumn;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use function array_key_exists;
@@ -27,43 +29,55 @@ class BookRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array{
-     *     "q"?: string,
-     *     "author"?: string,
-     *     "available"?: bool,
-     * } $criteria
-     *
      * @return list<Book>
      */
-    public function search(array $criteria): array
+    public function search(BookSearchCriteria $criteria): array
     {
         $qb = $this->createQueryBuilder('book');
 
-        if (array_key_exists('q', $criteria) === true) {
+        if ($criteria->q !== null) {
             $qb = $qb
                 ->andWhere($qb->expr()->like('book.title', ':q'))
-                ->setParameter('q', "%{$criteria['q']}%")
+                ->setParameter('q', "%{$criteria->q}%")
             ;
         }
 
-        if (array_key_exists('author', $criteria) === true) {
+        if (
+            $criteria->author !== null
+            || $criteria->sort === BookSortableColumn::Author
+        ) {
             $qb = $qb
                 ->innerJoin('book.authors', 'author')
-                ->andWhere($qb->expr()->like('author.name', ':author'))
-                ->setParameter('author', "%{$criteria['author']}%")
             ;
         }
 
-        if (array_key_exists('available', $criteria) === true && $criteria['available'] !== null) {
+        if ($criteria->author !== null) {
+            $qb = $qb
+                ->andWhere($qb->expr()->like('author.name', ':author'))
+                ->setParameter('author', "%{$criteria->author}%")
+            ;
+        }
+
+        if ($criteria->genre !== null) {
+            $qb = $qb
+                ->innerJoin('book.genres', 'genre')
+                ->andWhere($qb->expr()->like('genre.name', ':genre'))
+                ->setParameter('genre', "%{$criteria->genre}%")
+            ;
+        }
+
+        if ($criteria->available !== null) {
             $qb = $qb
                 ->andWhere($qb->expr()->eq('book.available', ':available'))
-                ->setParameter('available', $criteria['available'])
+                ->setParameter('available', $criteria->available)
             ;
         }
 
-        $qb = $qb
-            ->orderBy('book.title', \SortDirection::Ascending)
-        ;
+        if ($criteria->sort !== null) {
+            $qb = $qb
+                ->orderBy($criteria->sort->queryColumn(), $criteria->direction)
+            ;
+        }
 
         return $qb->getQuery()->getResult();
     }

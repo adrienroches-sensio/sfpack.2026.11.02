@@ -7,9 +7,12 @@ namespace App\Controller;
 use App\Entity\Book;
 use App\Form\BookSearchType;
 use App\Repository\BookRepository;
+use App\Repository\GenreRepository;
+use App\Search\Book\BookSearchCriteria;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 
@@ -20,18 +23,20 @@ final class BookController extends AbstractController
         name: 'app_book_index',
         methods: ['GET'],
     )]
-    public function index(Request $request, BookRepository $bookRepository): Response
-    {
-        $form = $this->createForm(BookSearchType::class);
-        $form->handleRequest($request);
+    public function index(
+        BookRepository $bookRepository,
+        GenreRepository $genreRepository,
 
-        $criteria = $form->isSubmitted() && $form->isValid() ? $form->getData() : [];
-
+        #[MapQueryString]
+        BookSearchCriteria $criteria = new BookSearchCriteria(),
+    ): Response {
+        $genres = $genreRepository->listAll();
         $books = $bookRepository->search($criteria);
 
         return $this->render('book/index.html.twig', [
             'books' => $books,
-            'search_form' => $form,
+            'criteria' => $criteria,
+            'genres' => $genres,
         ]);
     }
 

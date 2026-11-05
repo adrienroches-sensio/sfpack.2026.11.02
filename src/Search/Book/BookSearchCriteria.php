@@ -19,6 +19,10 @@ final class BookSearchCriteria
         public BookSortableColumn|null $sort = null,
         string|null $direction = null,
     ) {
+        if ($this->genre === '') {
+            $this->genre = null;
+        }
+
         if (null !== $direction) {
             $this->direction = mb_strtolower($direction) === 'asc' ? SortDirection::Ascending : SortDirection::Descending;
         }
