@@ -26,8 +26,11 @@
                         <td>{{ book.authors|map(a => a.name)|join(', ') }}</td>
                         <td>{{ book.isbn }}</td>
                         <td class="admin-table-actions">
-                            <a href="{{ path('admin_book_edit', {id: book.id}) }}"
-                               class="btn btn-outline-secondary">Edit</a>
+
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('admin_book_edit', {id: book.id}) }}"
+                                   class="btn btn-outline-secondary">Edit</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
