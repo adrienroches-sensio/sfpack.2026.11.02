@@ -6,14 +6,30 @@ namespace App\Controller\Admin;
 
 use App\Entity\Book;
 use App\Form\BookType;
+use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Requirement\Requirement;
 
 final class BookController extends AbstractController
 {
+    #[Route(
+        path: '/admin/books',
+        name: 'admin_book_index',
+        methods: ['GET']
+    )]
+    public function index(BookRepository $bookRepository): Response
+    {
+        $books = $bookRepository->listAll();
+
+        return $this->render('admin/book/index.html.twig', [
+            'books' => $books,
+        ]);
+    }
+
     #[Route(
         path: '/admin/books/new',
         name: 'admin_book_new',
@@ -22,6 +38,9 @@ final class BookController extends AbstractController
     #[Route(
         path: '/admin/books/{id}/edit',
         name: 'admin_book_edit',
+        requirements: [
+            'id' => Requirement::DIGITS,
+        ],
         methods: ['GET', 'POST'],
     )]
     public function new(Request $request, EntityManagerInterface $em, Book|null $book = null): Response
