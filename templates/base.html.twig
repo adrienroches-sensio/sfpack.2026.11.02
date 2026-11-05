@@ -24,6 +24,10 @@
                 <a href="{{ path('app_book_index') }}">Books</a>
                 <a href="{{ path('app_author_index') }}">Authors</a>
 
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('admin_book_index') }}">Admin</a>
+                {% endif %}
+
                 <div class="user-menu">
                     {% if is_granted('IS_AUTHENTICATED') %}
                         <span class="user-email">{{ app.user.username }}</span>
