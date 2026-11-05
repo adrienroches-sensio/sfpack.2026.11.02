@@ -13,8 +13,18 @@ enum BookSortableColumn: string
     public function queryColumn(): string
     {
         return match($this) {
-            self::Title, self::PublicationDate => "book.{$this->value}",
-            self::Author => "{$this->value}.name",
+            self::Title => 'book.title',
+            self::PublicationDate => 'book.publicationDate',
+            self::Author => 'author.name',
+        };
+    }
+
+    public function label(): string
+    {
+        return match($this) {
+            self::Title => 'Title',
+            self::Author => 'Author',
+            self::PublicationDate => 'Published',
         };
     }
 }

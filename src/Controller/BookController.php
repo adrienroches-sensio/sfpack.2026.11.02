@@ -25,18 +25,18 @@ final class BookController extends AbstractController
     )]
     public function index(
         BookRepository $bookRepository,
-        GenreRepository $genreRepository,
 
         #[MapQueryString]
         BookSearchCriteria $criteria = new BookSearchCriteria(),
     ): Response {
-        $genres = $genreRepository->listAll();
         $books = $bookRepository->search($criteria);
+
+        $form = $this->createForm(BookSearchType::class, $criteria);
 
         return $this->render('book/index.html.twig', [
             'books' => $books,
             'criteria' => $criteria,
-            'genres' => $genres,
+            'search_form' => $form,
         ]);
     }
 

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use App\Repository\GenreRepository;
+use App\Search\Book\BookSearchCriteria;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -14,16 +15,32 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BookSearchType extends AbstractType
 {
+    public function __construct(
+        private GenreRepository $genreRepository,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $genres = $this->genreRepository->listAll();
+        $genreChoices = [];
+        foreach ($genres as $genre) {
+            $genreChoices[$genre->getName()] = $genre->getName();
+        }
+
         $builder
             ->add('q', SearchType::class, [
                 'label' => 'Title',
-                'required' => false
+                'required' => false,
             ])
             ->add('author', TextType::class, [
                 'label' => 'Author',
-                'required' => false
+                'required' => false,
+            ])
+            ->add('genre', ChoiceType::class, [
+                'label' => 'Genre',
+                'choices' => $genreChoices,
+                'required' => false,
             ])
             ->add('available', ChoiceType::class, [
                 'label' => 'Only available books',
@@ -31,7 +48,7 @@ class BookSearchType extends AbstractType
                 'choices' => [
                     'Yes' => true,
                     'No' => false,
-                ]
+                ],
             ])
         ;
     }
@@ -40,7 +57,13 @@ class BookSearchType extends AbstractType
     {
         $resolver->setDefaults([
             'method' => 'GET',
-            'csrf_protection' => false
+            'csrf_protection' => false,
+            'data_class' => BookSearchCriteria::class,
         ]);
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return '';
     }
 }

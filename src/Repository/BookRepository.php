@@ -4,11 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Book;
 use App\Search\Book\BookSearchCriteria;
-use App\Search\Book\BookSortableColumn;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use function array_key_exists;
-use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<Book>
@@ -35,19 +32,15 @@ class BookRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('book');
 
+        $qb = $qb
+            ->innerJoin('book.authors', 'author')
+            ->addSelect('author')
+        ;
+
         if ($criteria->q !== null) {
             $qb = $qb
                 ->andWhere($qb->expr()->like('book.title', ':q'))
                 ->setParameter('q', "%{$criteria->q}%")
-            ;
-        }
-
-        if (
-            $criteria->author !== null
-            || $criteria->sort === BookSortableColumn::Author
-        ) {
-            $qb = $qb
-                ->innerJoin('book.authors', 'author')
             ;
         }
 
