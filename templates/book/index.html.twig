@@ -1,21 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title 'Books - Community Library' %}
+{% block title %}Books — Community Library{% endblock %}
 
 {% block body %}
     <h1>Our collection ({{ books|length }} books)</h1>
 
     <div class="book-grid">
         {% for book in books %}
-        <div class="book-card">
-            <h2>
-                <a href="{{ path('app_book_show', {id: book.id}) }}">
-                    {{ book.title }}
+            <div class="book-card">
+                <h2>
+                    <a href="{{ path('app_book_show', {id: book.id}) }}">
+                        {{ book.title }}
+                    </a>
+                </h2>
+                <p>
+                    {{ book.authors|map(a => a.name)|join(', ') }}
+                    &mdash; {{ book.publicationDate|date('Y') }}
+                </p>
+                <a href="{{ path('admin_book_edit', {id: book.id}) }}" class="btn btn-outline-secondary">
+                    Edit
                 </a>
-            </h2>
-            <p>{{ book.authors|map(author => author.name)|join(', ') }} &mdash; {{ book.language }}</p>
-            <p><em>{{ book.genres|map(genre => genre.name)|join(', ') }}</em></p>
-        </div>
+            </div>
         {% endfor %}
     </div>
-{% endblock body %}
+{% endblock %}

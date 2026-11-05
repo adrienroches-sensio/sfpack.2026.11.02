@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Book;
 use App\Form\BookType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,7 @@ final class BookController extends AbstractController
         name: 'admin_book_edit',
         methods: ['GET', 'POST'],
     )]
-    public function new(Request $request, Book|null $book = null): Response
+    public function new(Request $request, EntityManagerInterface $em, Book|null $book = null): Response
     {
         $isCreate = null === $book;
         $book ??= new Book();
@@ -32,6 +33,9 @@ final class BookController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($book);
+            $em->flush();
+
             return $this->redirectToRoute('app_book_show', ['id' => $book->getId()]);
         }
 
