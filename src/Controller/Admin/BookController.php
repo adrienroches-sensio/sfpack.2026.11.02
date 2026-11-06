@@ -61,6 +61,10 @@ final class BookController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($book->getAddedBy() === null) {
+                $book->setAddedBy($this->getUser());
+            }
+
             $em->persist($book);
             $em->flush();
 
