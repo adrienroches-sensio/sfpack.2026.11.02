@@ -19,6 +19,14 @@ class LoanRepository extends ServiceEntityRepository
         parent::__construct($registry, Loan::class);
     }
 
+    /**
+     * @return list<Loan>
+     */
+    public function listAll(): array
+    {
+        return $this->findAll();
+    }
+
     public function searchOneByBook(Book $book): Loan|null
     {
         $qb = $this->createQueryBuilder('loan');

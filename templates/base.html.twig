@@ -23,6 +23,7 @@
                 <a href="{{ path('app_main_contact') }}">Contact</a>
                 <a href="{{ path('app_book_index') }}">Books</a>
                 <a href="{{ path('app_author_index') }}">Authors</a>
+                <a href="{{ path('app_loan_index') }}">Loans</a>
 
                 {% if is_granted('ROLE_LIBRARIAN') %}
                     <a href="{{ path('admin_book_index') }}">Admin</a>
