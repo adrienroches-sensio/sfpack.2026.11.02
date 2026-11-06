@@ -64,7 +64,7 @@ final class LibraryCatalogStory extends Story
             ->many(floor(count($booksData) / 2))
             ->create(static function (): array {
                 return [
-                    'book' => BookFactory::find(['available' => true]),
+                    'book' => BookFactory::find(['available' => false]),
                     'user' => UserFactory::random(),
                 ];
             })
