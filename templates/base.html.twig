@@ -24,7 +24,7 @@
                 <a href="{{ path('app_book_index') }}">Books</a>
                 <a href="{{ path('app_author_index') }}">Authors</a>
 
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_LIBRARIAN') %}
                     <a href="{{ path('admin_book_index') }}">Admin</a>
                 {% endif %}
 
