@@ -24,14 +24,15 @@ final class BookController extends AbstractController
         methods: ['GET'],
     )]
     public function index(
+        Request $request,
         BookRepository $bookRepository,
-
-        #[MapQueryString]
-        BookSearchCriteria $criteria = new BookSearchCriteria(),
     ): Response {
-        $books = $bookRepository->search($criteria);
+        $criteria = new BookSearchCriteria();
 
         $form = $this->createForm(BookSearchType::class, $criteria);
+        $form->handleRequest($request);
+
+        $books = $bookRepository->search($criteria);
 
         return $this->render('book/index.html.twig', [
             'books' => $books,
