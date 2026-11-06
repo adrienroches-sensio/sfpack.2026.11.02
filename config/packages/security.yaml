@@ -1,4 +1,20 @@
 security:
+    role_hierarchy:
+        # Base role for any user
+        ROLE_USER: ~
+
+        # Only manages the website
+        ROLE_WEBMASTER: ['ROLE_USER']
+
+        # Can manage books themselves
+        ROLE_LIBRARIAN: ['ROLE_USER']
+
+        # Can manage books but with higher credentials
+        ROLE_MANAGER: ['ROLE_LIBRARIAN']
+
+        # All access
+        ROLE_ADMIN: ['ROLE_MANAGER', 'ROLE_WEBMASTER']
+
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'

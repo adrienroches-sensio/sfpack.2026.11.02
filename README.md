@@ -27,6 +27,8 @@ $ symfony console make:story <name>
 
 # Users
 
+See roles matrix [here](./roles.mmd).
+
 | username | password | roles        |
 |----------|----------|--------------|
 | user     | user     | -            |
