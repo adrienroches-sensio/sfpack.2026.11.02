@@ -25,6 +25,38 @@ final class UserFactory extends PersistentProxyObjectFactory
         return User::class;
     }
 
+    public static function createAll(): void
+    {
+        self::createOne([
+            'username' => 'admin',
+            'password' => 'admin',
+            'roles' => ['ROLE_ADMIN'],
+        ]);
+
+        self::createOne([
+            'username' => 'manager',
+            'password' => 'manager',
+            'roles' => ['ROLE_MANAGER'],
+        ]);
+
+        self::createOne([
+            'username' => 'librarian',
+            'password' => 'librarian',
+            'roles' => ['ROLE_LIBRARIAN'],
+        ]);
+
+        self::createOne([
+            'username' => 'webmaster',
+            'password' => 'webmaster',
+            'roles' => ['ROLE_WEBMASTER'],
+        ]);
+
+        self::createOne([
+            'username' => 'reader',
+            'password' => 'reader',
+        ]);
+    }
+
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
      *

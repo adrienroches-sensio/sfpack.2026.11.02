@@ -53,15 +53,6 @@ final class LibraryCatalogStory extends Story
             })
         ;
 
-        UserFactory::createOne([
-            'username' => 'admin',
-            'password' => 'admin',
-            'roles' => ['ROLE_ADMIN'],
-        ]);
-
-        UserFactory::createOne([
-            'username' => 'user',
-            'password' => 'user',
-        ]);
+        UserFactory::createAll();
     }
 }

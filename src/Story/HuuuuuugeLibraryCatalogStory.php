@@ -37,16 +37,7 @@ final class HuuuuuugeLibraryCatalogStory extends Story
             })
         ;
 
-        UserFactory::createOne([
-            'username' => 'admin',
-            'password' => 'admin',
-            'roles' => ['ROLE_ADMIN'],
-        ]);
-
-        UserFactory::createOne([
-            'username' => 'user',
-            'password' => 'user',
-        ]);
+        UserFactory::createAll();
 
         UserFactory::createMany(10);
     }

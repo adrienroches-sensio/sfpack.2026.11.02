@@ -29,7 +29,10 @@ $ symfony console make:story <name>
 
 See roles matrix [here](./roles.mmd).
 
-| username | password | roles        |
-|----------|----------|--------------|
-| user     | user     | -            |
-| admin    | admin    | `ROLE_ADMIN` |
+| username  | password  | roles                                                                                      |
+|-----------|-----------|--------------------------------------------------------------------------------------------|
+| reader    | reader    | `ROLE_USER`                                                                                |
+| webmaster | webmaster | `ROLE_WEBMASTER` (inherits: [`ROLE_USER`])                                                 |
+| librarian | librarian | `ROLE_LIBRARIAN` (inherits: [`ROLE_USER`])                                                 |
+| manager   | manager   | `ROLE_MANAGER` (inherits: [`ROLE_LIBRARIAN`, `ROLE_USER`])                                 |
+| admin     | admin     | `ROLE_ADMIN` (inherits: [`ROLE_WEBMASTER`, `ROLE_MANAGER`, `ROLE_LIBRARIAN`, `ROLE_USER`]) |
