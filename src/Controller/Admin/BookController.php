@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Book\Security\BookPermission;
 use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
@@ -15,9 +16,9 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_LIBRARIAN')]
 final class BookController extends AbstractController
 {
+    #[IsGranted('ROLE_LIBRARIAN')]
     #[Route(
         path: '/admin/books',
         name: 'admin_book_index',
@@ -49,6 +50,12 @@ final class BookController extends AbstractController
     {
         $isCreate = null === $book;
         $book ??= new Book();
+
+        $isCreate
+            ? $this->denyAccessUnlessGranted('ROLE_LIBRARIAN')
+            : $this->denyAccessUnlessGranted(BookPermission::EDIT_DETAILS, $book)
+        ;
+
 
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
