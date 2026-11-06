@@ -57,6 +57,9 @@ class Book
     #[ORM\ManyToMany(targetEntity: Author::class, inversedBy: 'books')]
     private Collection $authors;
 
+    #[ORM\ManyToOne(inversedBy: 'books')]
+    private ?User $addedBy = null;
+
     public function __construct()
     {
         $this->genres = new ArrayCollection();
@@ -199,6 +202,18 @@ class Book
         if ($this->authors->removeElement($author)) {
             $author->removeBook($this);
         }
+
+        return $this;
+    }
+
+    public function getAddedBy(): ?User
+    {
+        return $this->addedBy;
+    }
+
+    public function setAddedBy(?User $addedBy): static
+    {
+        $this->addedBy = $addedBy;
 
         return $this;
     }
