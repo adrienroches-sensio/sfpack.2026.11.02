@@ -4,6 +4,7 @@ namespace App\Factory;
 
 use App\Entity\Loan;
 use App\Loan\LoanStatus;
+use DateTimeImmutable;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
@@ -32,10 +33,12 @@ final class LoanFactory extends PersistentProxyObjectFactory
      */
     protected function defaults(): array|callable
     {
+        $loanDate = \DateTimeImmutable::createFromMutable(self::faker()->dateTime());
+
         return [
             'book' => BookFactory::new(),
-            'dueDate' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
-            'loanDate' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
+            'loanDate' => $loanDate,
+            'dueDate' => $loanDate->modify('+14 days'),
             'status' => self::faker()->randomElement(LoanStatus::cases()),
             'user' => UserFactory::new(),
         ];
@@ -47,7 +50,18 @@ final class LoanFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(Loan $loan): void {})
+             ->afterInstantiate(function(Loan $loan): void {
+                 if ($loan->getStatus() === LoanStatus::Returned) {
+                     $loan->setReturnDate(DateTimeImmutable::createFromMutable(self::faker()->dateTimeBetween(
+                         $loan->getLoanDate()->format('c'),
+                         $loan->getDueDate()->format('c'),
+                     )));
+
+                     return;
+                 }
+
+                 $loan->setReturnDate(null);
+             })
         ;
     }
 }

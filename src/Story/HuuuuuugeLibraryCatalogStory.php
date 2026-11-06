@@ -5,9 +5,12 @@ namespace App\Story;
 use App\Factory\AuthorFactory;
 use App\Factory\BookFactory;
 use App\Factory\GenreFactory;
+use App\Factory\LoanFactory;
 use App\Factory\UserFactory;
 use Zenstruck\Foundry\Attribute\AsFixture;
 use Zenstruck\Foundry\Story;
+use function count;
+use function floor;
 use function random_int;
 
 #[AsFixture('huge_catalog')]
@@ -37,6 +40,16 @@ final class HuuuuuugeLibraryCatalogStory extends Story
                     'genres' => GenreFactory::randomSet($numberOfGenres),
                     'authors' => AuthorFactory::randomSet($numberOfAuthors),
                     'addedBy' => UserFactory::random(),
+                ];
+            })
+        ;
+
+        LoanFactory::new()
+            ->many(100)
+            ->create(static function (): array {
+                return [
+                    'book' => BookFactory::random(),
+                    'user' => UserFactory::random(),
                 ];
             })
         ;

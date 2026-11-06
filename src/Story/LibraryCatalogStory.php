@@ -5,12 +5,15 @@ namespace App\Story;
 use App\Factory\AuthorFactory;
 use App\Factory\BookFactory;
 use App\Factory\GenreFactory;
+use App\Factory\LoanFactory;
 use App\Factory\UserFactory;
 use DateTimeImmutable;
 use Zenstruck\Foundry\Attribute\AsFixture;
 use Zenstruck\Foundry\Story;
 use function array_values;
+use function count;
 use function dirname;
+use function floor;
 
 #[AsFixture('catalog')]
 final class LibraryCatalogStory extends Story
@@ -38,7 +41,7 @@ final class LibraryCatalogStory extends Story
 
         BookFactory::new()
             ->many(count($booksData))
-            ->create(static function (int $i) use ($booksData) {
+            ->create(static function (int $i) use ($booksData): array {
                 $bookIndex = $i - 1;
                 $bookData = $booksData[$bookIndex];
 
@@ -54,6 +57,16 @@ final class LibraryCatalogStory extends Story
                 $bookData['addedBy'] = $i % 3 === 0 ? UserFactory::find(['username' => 'reader']) : UserFactory::find(['username' => 'librarian']);
 
                 return $bookData;
+            })
+        ;
+
+        LoanFactory::new()
+            ->many(floor(count($booksData) / 2))
+            ->create(static function (): array {
+                return [
+                    'book' => BookFactory::random(),
+                    'user' => UserFactory::random(),
+                ];
             })
         ;
     }
