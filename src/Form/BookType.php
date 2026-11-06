@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Book\Security\BookPermission;
 use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Genre;
@@ -10,9 +11,15 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class BookType extends AbstractType
 {
+    public function __construct(
+        private AuthorizationCheckerInterface $authorizationChecker,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -22,7 +29,15 @@ class BookType extends AbstractType
             ->add('publicationDate', DateType::class, [
                 'widget' => 'single_text'
             ])
-            ->add('available')
+        ;
+
+        if ($this->authorizationChecker->isGranted(BookPermission::CHANGE_AVAILABILITY, $options['data'])) {
+            $builder
+                ->add('available')
+            ;
+        }
+
+        $builder
             ->add('language')
             ->add('coverUrl')
             ->add('genres', EntityType::class, [
