@@ -17,6 +17,10 @@ final class LibraryCatalogStory extends Story
 {
     public function build(): void
     {
+        UserFactory::createAll();
+
+        GenreFactory::createAll();
+
         /**
          * @var list<array{
          *     'title': non-empty-string,
@@ -31,8 +35,6 @@ final class LibraryCatalogStory extends Story
          * }> $booksData
          */
         $booksData = array_values(require dirname(__DIR__, 2) . '/fixtures/book_fixtures.php');
-
-        GenreFactory::createAll();
 
         BookFactory::new()
             ->many(count($booksData))
@@ -49,10 +51,10 @@ final class LibraryCatalogStory extends Story
                 $bookData['authors'] = [AuthorFactory::findOrCreate(['name' => $bookData['author']])];
                 unset($bookData['author']);
 
+                $bookData['addedBy'] = $i % 3 === 0 ? UserFactory::find(['username' => 'reader']) : UserFactory::find(['username' => 'librarian']);
+
                 return $bookData;
             })
         ;
-
-        UserFactory::createAll();
     }
 }

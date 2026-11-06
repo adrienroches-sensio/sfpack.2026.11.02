@@ -41,6 +41,7 @@ final class BookFactory extends PersistentProxyObjectFactory
             'available' => self::faker()->boolean(),
             'language' => self::faker()->languageCode(),
             'coverUrl' => self::faker()->imageUrl(),
+            'addedBy' => null,
         ];
     }
 

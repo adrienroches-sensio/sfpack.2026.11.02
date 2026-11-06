@@ -15,6 +15,9 @@ final class HuuuuuugeLibraryCatalogStory extends Story
 {
     public function build(): void
     {
+        UserFactory::createAll();
+        UserFactory::createMany(10);
+
         GenreFactory::createAll();
 
         AuthorFactory::createMany(150);
@@ -33,12 +36,9 @@ final class HuuuuuugeLibraryCatalogStory extends Story
                 return [
                     'genres' => GenreFactory::randomSet($numberOfGenres),
                     'authors' => AuthorFactory::randomSet($numberOfAuthors),
+                    'addedBy' => UserFactory::random(),
                 ];
             })
         ;
-
-        UserFactory::createAll();
-
-        UserFactory::createMany(10);
     }
 }
