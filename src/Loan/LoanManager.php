@@ -7,10 +7,12 @@ namespace App\Loan;
 use App\Entity\Book;
 use App\Entity\Loan;
 use App\Entity\User;
+use App\Loan\Event\LoanCreatedEvent;
 use App\Repository\LoanRepository;
 use DateInterval;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use RuntimeException;
 
 final class LoanManager
@@ -20,6 +22,7 @@ final class LoanManager
     public function __construct(
         private EntityManagerInterface $em,
         private LoanRepository $loanRepository,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -53,6 +56,8 @@ final class LoanManager
         $this->em->persist($book);
 
         $this->em->flush();
+
+        $this->eventDispatcher->dispatch(new LoanCreatedEvent($loan));
 
         return $loan;
     }

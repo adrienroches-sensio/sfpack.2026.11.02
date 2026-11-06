@@ -48,7 +48,7 @@ final class HuuuuuugeLibraryCatalogStory extends Story
             ->many(100)
             ->create(static function (): array {
                 return [
-                    'book' => BookFactory::random(),
+                    'book' => BookFactory::find(['available' => true]),
                     'user' => UserFactory::random(),
                 ];
             })

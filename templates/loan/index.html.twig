@@ -35,9 +35,9 @@
                             <td>{{ loan.status.value }}</td>
                             <td class="admin-table-actions">
                                 {% if loan.returnDate is null %}
-{#                                    <form method="POST" action="{{ path('app_loan_return', {id: loan.id}) }}">#}
-{#                                        <button type="submit" class="btn btn-outline-secondary">Return</button>#}
-{#                                    </form>#}
+                                    <form method="POST" action="{{ path('app_loan_return', {id: loan.id}) }}">
+                                        <button type="submit" class="btn btn-outline-secondary">Return</button>
+                                    </form>
                                 {% endif %}
                             </td>
                         </tr>

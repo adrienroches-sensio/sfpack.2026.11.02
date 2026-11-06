@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Book;
 use App\Entity\Loan;
+use App\Entity\User;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,9 +23,17 @@ class LoanRepository extends ServiceEntityRepository
     /**
      * @return list<Loan>
      */
-    public function listAll(): array
+    public function listAllForUser(User $user): array
     {
-        return $this->findAll();
+        $qb = $this->createQueryBuilder('loan');
+
+        $qb
+            ->andWhere($qb->expr()->eq('loan.user', ':user'))
+            ->setParameter('user', $user)
+            ->orderBy('loan.dueDate', \SortDirection::Descending)
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 
     public function searchOneByBook(Book $book): Loan|null
@@ -32,7 +41,7 @@ class LoanRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('loan');
 
         $qb
-            ->andWhere($qb->expr()->eq('book', ':book'))
+            ->andWhere($qb->expr()->eq('loan.book', ':book'))
             ->setParameter('book', $book)
         ;
 
